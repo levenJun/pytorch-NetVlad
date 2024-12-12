@@ -44,11 +44,16 @@ parser.add_argument('--momentum', type=float, default=0.9, help='Momentum for SG
 parser.add_argument('--nocuda', action='store_true', help='Dont use cuda')
 parser.add_argument('--threads', type=int, default=8, help='Number of threads for each data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='Random seed to use.')
-parser.add_argument('--dataPath', type=str, default='/nfs/ibrahimi/data/', help='Path for centroid data.')
-parser.add_argument('--runsPath', type=str, default='/nfs/ibrahimi/runs/', help='Path to save runs to.')
-parser.add_argument('--savePath', type=str, default='checkpoints', 
+# parser.add_argument('--dataPath', type=str, default='/nfs/ibrahimi/data/', help='Path for centroid data.')
+# parser.add_argument('--runsPath', type=str, default='/nfs/ibrahimi/runs/', help='Path to save runs to.')
+# parser.add_argument('--savePath', type=str, default='checkpoints', 
+#         help='Path to save checkpoints to in logdir. Default=checkpoints/')
+# parser.add_argument('--cachePath', type=str, default=environ['TMPDIR'], help='Path to save cache to.')
+parser.add_argument('--dataPath', type=str, default='datasets/data/', help='Path for centroid data.')
+parser.add_argument('--runsPath', type=str, default='datasets/runs/', help='Path to save runs to.')
+parser.add_argument('--savePath', type=str, default='datasets/checkpoints', 
         help='Path to save checkpoints to in logdir. Default=checkpoints/')
-parser.add_argument('--cachePath', type=str, default=environ['TMPDIR'], help='Path to save cache to.')
+parser.add_argument('--cachePath', type=str, default='datasets/TMPDIR', help='Path to save cache to.')
 parser.add_argument('--resume', type=str, default='', help='Path to load checkpoint from, for resuming training or testing.')
 parser.add_argument('--ckpt', type=str, default='latest', 
         help='Resume from latest or best checkpoint.', choices=['latest', 'best'])
@@ -195,8 +200,8 @@ def test(eval_set, epoch=0, write_tboard=False):
     del test_data_loader
 
     # extracted for both db and query, now split in own sets
-    qFeat = dbFeat[eval_set.dbStruct.numDb:].astype('float32')
-    dbFeat = dbFeat[:eval_set.dbStruct.numDb].astype('float32')
+    qFeat = dbFeat[eval_set.dbStruct.numDb:].astype('float32')      #查询集特征：从numDb开始往后所有
+    dbFeat = dbFeat[:eval_set.dbStruct.numDb].astype('float32')     #参考集特征：从numDb开始往前所有
     
     print('====> Building faiss index')
     faiss_index = faiss.IndexFlatL2(pool_size)
@@ -484,7 +489,7 @@ if __name__ == "__main__":
     if opt.mode.lower() == 'test':
         print('===> Running evaluation step')
         epoch = 1
-        recalls = test(whole_test_set, epoch, write_tboard=False)
+        recalls = test(whole_test_set, epoch, write_tboard=False) #正式开始test
     elif opt.mode.lower() == 'cluster':
         print('===> Calculating descriptors and clusters')
         get_clusters(whole_train_set)

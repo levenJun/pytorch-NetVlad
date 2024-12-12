@@ -6,11 +6,11 @@ Implementation of [NetVlad](https://arxiv.org/abs/1511.07247) in PyTorch, includ
 
 Below are the result as compared to the results in third row in the right column of Table 1:
 
-|   |R@1|R@5|R@10|
-|---|---|---|---|
-| [NetVlad paper](https://arxiv.org/abs/1511.07247)  | 84.1  | 94.6  | 95.5  |
-| pytorch-NetVlad(alexnet)  | 68.6  | 84.6  | 89.3  |
-| pytorch-NetVlad(vgg16)  | 85.2  | 94.8  | 97.0  |
+|                                                | R@1  | R@5  | R@10 |
+| ---------------------------------------------- | ---- | ---- | ---- |
+| [NetVlad paper](https://arxiv.org/abs/1511.07247) | 84.1 | 94.6 | 95.5 |
+| pytorch-NetVlad(alexnet)                       | 68.6 | 84.6 | 89.3 |
+| pytorch-NetVlad(vgg16)                         | 85.2 | 94.8 | 97.0 |
 
 Running main.py with train mode and default settings should give similar scores to the ones shown above. Additionally, the model state for the above run is
 available here: https://drive.google.com/open?id=17luTjZFCX639guSVy00OUtzfTQo4AMF2
@@ -26,18 +26,27 @@ Using this checkpoint and the following command you can obtain the results shown
 1. [PyTorch](https://pytorch.org/get-started/locally/) (at least v0.4.0)
 2. [Faiss](https://github.com/facebookresearch/faiss)
 3. [scipy](https://www.scipy.org/)
-    - [numpy](http://www.numpy.org/)
-    - [sklearn](https://scikit-learn.org/stable/)
-    - [h5py](https://www.h5py.org/)
+   - [numpy](http://www.numpy.org/)
+   - [sklearn](https://scikit-learn.org/stable/)
+   - [h5py](https://www.h5py.org/)
 4. [tensorboardX](https://github.com/lanpa/tensorboardX)
+
+pip3 install numpy opencv-python torch matplotlib -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+pip3 install torchaudio -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+pip3 install faiss-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+pip3 install scipy numpy scikit-learn h5py tensorboardX -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## Data
 
-Running this code requires a copy of the Pittsburgh 250k (available [here](https://github.com/Relja/netvlad/issues/42)), 
+Running this code requires a copy of the Pittsburgh 250k (available [here](https://github.com/Relja/netvlad/issues/42)),
 and the dataset specifications for the Pittsburgh dataset (available [here](https://www.di.ens.fr/willow/research/netvlad/data/netvlad_v100_datasets.tar.gz)).
 `pittsburgh.py` contains a hardcoded path to a directory, where the code expects directories `000` to `010` with the various Pittsburth database images, a directory
 `queries_real` with subdirectories `000` to `010` with the query images, and a directory `datasets` with the dataset specifications (.mat files).
 
+到指定存储目录下，下载数据集:wget -r -np -nH --cut-dirs=4 -R "index.html*" https://data.ciirc.cvut.cz/public/projects/2015netVLAD/Pittsburgh250k/
 
 # Usage
 
